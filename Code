@@ -1,0 +1,23 @@
+MVI B,15; Top Limit (backed up for comparison)
+LDA 0001H; Entrance of Input(0-1)
+DCR A; Decrement
+JM out; Exit of vehicle
+JMP IN; Enter of vehicle
+out: LDA 0000H; Taking the number of vehicles as input
+MOV C,A; Accumulator back-up
+SUB B; Looking at the difference
+JZ FINISH; If there is no difference, the program will jump to FINISH line
+MOV A,C; If there is difference(from 15), restore data to the accumulator
+INR A; If all conditions confirmed; vehicle exit is confirmed and the number of parking spaces is increasing.
+STA 0000H; Backing up result
+JMP FINISH; Since there is only one operation per unit period, the end is reached.
+IN: LDA 0000H; Taking the number of vehicles as input
+DCR A; If all conditions confirmed; vehicle enter is confirmed and the number of parking spaces is decreasing.
+JM FINISH; There is no vehicle in the parking lot, so vehicle exit cannot be done logically.
+STA 0000H; Backing up result
+FINISH: HLT; END
+
+; THE NUMBER OF EMPTY PLACES CAN BE SEEN AT THE ADDRESS 0000H.
+; 0001 index numbers data input location
+; If the data is 1, vehicle enters the parking lot.(Max 15 parking places)
+; If the data is 0, vehicle exits the parking lot.(Min 0 parking place)
